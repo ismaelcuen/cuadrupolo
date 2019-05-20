@@ -60,5 +60,4 @@ FUNCTION cross_product(a,b)
     END DO ciclo_indice_e
   END FUNCTION cross_product
 
-
 END MODULE vector_functions
