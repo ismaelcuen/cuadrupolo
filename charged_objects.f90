@@ -25,7 +25,7 @@ END TYPE charged_particles
 
 !!Tipo publico para producir objetos del tipo estrella
 TYPE, PUBLIC :: data
-REAL ( d ), DIMENSION ( 3 ) :: Bmagn=(1,0,0) !!
+REAL ( d ), DIMENSION ( 3 ) :: Bmagn=(1.0_d,0.0_d,0.0_d) !!
 REAL ( d ) :: ttot !!Tiempo total de la simulacion
 REAL ( d ) :: dt !!Tama~no de paso
 REAL ( d ) :: N_step !!Cantidad de pasos
