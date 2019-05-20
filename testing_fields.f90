@@ -62,4 +62,6 @@ CLOSE ( unit0 )
 OPEN ( NEWUNIT = unit0 , FILE = "proton" , STATUS = "UNKNOWN" )
 WRITE ( unit0 , * ) proton%pos*scale
 CLOSE ( unit0 )
+
+CALL SYSTEM("gnuplot -p data_plot.plt") !!Graficar los resultados
 END PROGRAM testing_fields
