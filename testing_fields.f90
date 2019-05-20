@@ -52,7 +52,7 @@ sim%pos2 = antiproton%pos-proton%pos !!Calculando el vector r=r2-r1
 runit=sim%pos2/mag(sim%pos2)
 !!Calculando la interacci´on el´ectrica.
 antiproton%Eelec=( k*proton%q / mag(sim%pos2)**2)*runit
-antiproton%Felec = antiproton%q*(antiproton%Eelec + crossproduct(antiproton%mom/antiproton&mass, sim%Bmagn))
+antiproton%Felec = antiproton%q*(antiproton%Eelec + crossproduct(antiproton%mom/antiproton%mass, sim%Bmagn))
 !!Actualizando el momento lineal
 antiproton%mom = antiproton%mom + antiproton%Felec * sim%dt
 !!Actualizando la posici´on
