@@ -57,8 +57,6 @@ DO 1,4
 CALL campoelectrico(protonmovil,particulas(i))
 protonmovil%Eelec=protonmovil%Eelec+protonmovil%Eelec
 END DO
-antiproton%Eelec=( k*proton%q / mag(sim%pos2)**2)*runit
-antiproton%Felec = antiproton%q*antiproton%Eelec
 !!Actualizando el momento lineal
 antiproton%mom = antiproton%mom + antiproton%Felec * sim%dt
 !!Actualizando la posición
