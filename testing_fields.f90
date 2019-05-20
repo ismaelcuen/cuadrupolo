@@ -15,6 +15,7 @@ REAL(d) :: scale=1E9 !!Escalar longitudes en los plots
 REAL ( d ), DIMENSION ( 3 ) :: runit !!Vector Unitario
 INTEGER :: unit0 !!Unidad para archivo de salida
 
+PRINT*, sim%Bmagne
 !!Asignando valores físicos a la particula en movimiento (MKS)
 antiproton%mass = 1.7E-27_d !!Masa del antiproton
 antiproton%q = -1.6E-19_d !!carga del antiproton
