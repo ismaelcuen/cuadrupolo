@@ -1,20 +1,24 @@
-SUBROUTINE eKU(proton3%vel,proton3%mass,t)
+SUBROUTINE eKU(a,b)
   USE charged_objects
   USE vector_functions
   IMPLICIT NONE
   !K: Energía Cinética
   !U: Energía Potencial
   !proton3%mass: Masa
-  !a: Aceleración
+  !ac: Aceleración
   !r: Radio
   !v: Velocidad
   !i: Contador
-  !_________________________________________________________
-  REAL,INTENT(IN)::proton3%vel,proton3%mass
-  REAL::a,r
-  OPEN(1,FILE="Graph",STATUS="UNKNOWN")
-     K=(1/2)*proton3%mass*proton3%vel**2
-     U=proton3%mass*a*r
-     WRITE(1,*)t,U,K,U+K
-     CLOSE(1)
-   END SUBROUTINE eKU
+  !a: Variable dummy para el protonmovil enviado del programa principal
+  !-------------------------------------------
+  REAL::ac,r,K,U
+  TYPE(charged_particle),INTENT(IN)::a
+  REAL,INTENT::b
+  OPEN(UNIT=1,FILE="Graph",STATUS="UNKNOWN",ACTION="WRITE")
+  a%vel=a%mom/a%mass
+  ac=a%Felec/a%mass
+  K=(1/2)*a%mass*a%vel**2
+  U=a%mass*ac*r
+  WRITE(1,*)b,U,K,U+K
+  CLOSE(1)
+END SUBROUTINE eKU
