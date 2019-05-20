@@ -14,6 +14,7 @@ REAL(d) :: t !!Instante de tiempo en cada aproximación
 REAL(d) :: scale=1E9 !!Escalar longitudes en los plots
 REAL ( d ), DIMENSION ( 3 ) :: runit !!Vector Unitario
 INTEGER :: unit0 !!Unidad para archivo de salida
+REAL(d),DIMENSION(4)::particulas !Arreglo contenedor de las 4 partículas.
 !!Asignando valores físicos a la partícula en movimiento (MKS)
 antiproton%mass = 1.7E-27_d !!Masa del antiprotón
 antiproton%q = -1.6E-19_d !!carga del antiprotón
@@ -38,6 +39,10 @@ sim%ttot = 2E-11_d !!En este ejemplo se realizará la
 !!evolución durante unos segundos
 !sim%ttot = sim%ttot/t0 !!Traduciendo a unidades naturales.
 sim%dt = sim%ttot/sim%N_step !!Calculando el ancho de paso
+particulas(1)=proton1
+particulas(2)=proton2
+particulas(3)=antiproton1
+particulas(4)=antiproton2
 !!Abriendo el archivo de texto
 OPEN(NEWUNIT=unit0,FILE="Sim_ejemplo",STATUS="UNKNOWN",ACCESS="APPEND")
 t=0 !!La simulación inicia al tiempo t=0
@@ -49,15 +54,7 @@ runit=sim%pos2/mag(sim%pos2)
 !!Calculando la interacción eléctrica.
 protonmovil%Eelect=0.0_d
 DO 1,4
-IF(i=1)THEN
-CALL campoelectrico(protonmovil,proton1)
-ELSE IF(i=2)THEN
-CALL campoelectrico(protonmovil,proton2)
-ELFE IF(i=3)THEN
-CALL campoelectrico(protonmovil,antiproton1)
-ELSE IF(i=4)THEN
-CALL campoelectrico(protonmovil,antiproton2)
-END IF
+CALL campoelectrico(protonmovil,particulas(i))
 protonmovil%Eelec=protonmovil%Eelec+protonmovil%Eelec
 END DO
 antiproton%Eelec=( k*proton%q / mag(sim%pos2)**2)*runit
@@ -68,7 +65,7 @@ antiproton%mom = antiproton%mom + antiproton%Felec * sim%dt
 antiproton%pos = antiproton%pos + antiproton%mom / antiproton%mass * sim%dt
 WRITE(unit0,*) t , antiproton%pos*scale !!Escribiendo en el archivo
 t = t + sim%dt !!Actualizando el tiempo
-ENDDO
+END DO
 
 CLOSE ( unit0 )
 !!Este archivo sirve para la información del sol
