@@ -41,7 +41,8 @@ FUNCTION cross_product(a,b)
 
     !inicializacion del pseudotensor                                                                                                                                            
     e = 0
-    e(1,2,3) = 1    e(2,3,1) = 1
+    e(1,2,3) = 1
+    e(2,3,1) = 1
     e(3,1,2) = 1
     e(3,2,1) = -1
     e(1,3,2) = -1
