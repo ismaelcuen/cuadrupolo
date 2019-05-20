@@ -4,8 +4,8 @@ USE vector_functions
 IMPLICIT NONE
 
 !!Definiendo mis objetos masivos
-TYPE(charged_particles) :: antiproton !!Objeto tipo partícula cargada: antiprotón
-TYPE(charged_particles) :: proton !!Objeto tipo partícula
+TYPE(charged_particles) :: antiproton1,antiproton2 !!Objeto tipo partícula cargada: antiprotón
+TYPE(charged_particles) :: proton1,proton2,protonmovil !!Objeto tipo partícula
 !!cargada: protón estacionario
 TYPE(data) :: sim !!Objeto con información de la simulación
 
@@ -14,24 +14,42 @@ REAL(d) :: t !!Instante de tiempo en cada aproximación
 REAL(d) :: scale=1E9 !!Escalar longitudes en los plots
 REAL ( d ), DIMENSION ( 3 ) :: runit !!Vector Unitario
 INTEGER :: unit0 !!Unidad para archivo de salida
+INTEGER::i,j
 REAL(d),DIMENSION(4)::particulas !Arreglo contenedor de las 4 partículas.
+DO i=1,4
+IF(i=1 .OR. i=2)THEN
+particulas(i)%mass= 1.7E-27_d
+particulas(i)%q= 1.6E-19_d
+particulas(i)%vel= vector(0.0_d,0.0_d,0.0_d)
+particulas(i)%pos= vector(0.0_d,0.0_d,0.0_d)
+ELSE IF(i=3 .OR. i=4)THEN
+particulas(i)%mass= 1.7E-27_d
+particulas(i)%q= -1.6E-19_d
+particulas(i)%vel= vector(0.0_d,0.0_d,0.0_d)
+IF(i=3)THEN
+particulas(i)%pos= vector(0.0_d,0.5E-8_d,0.0_d)
+ELSE IF(i=4)THEN
+particulas(i)%pos= vector(0.0_d,-0.5-8_d,0.0_d)
+END IF
+END IF
+END DO
 !!Asignando valores físicos a la partícula en movimiento (MKS)
-antiproton%mass = 1.7E-27_d !!Masa del antiprotón
-antiproton%q = -1.6E-19_d !!carga del antiprotón
+!antiproton%mass = 1.7E-27_d !!Masa del antiprotón
+!antiproton%q = -1.6E-19_d !!carga del antiprotón
 !!Asignando valores físicos a la partícula fija (MKS)
-proton%mass = 1.7E-27_d !!Masa del protón
-proton%q = 1.6E-19_d !!Carga del protón
+protonmovil%mass = 1.7E-27_d !!Masa del protón
+protonmovil%q = 1.6E-19_d !!Carga del protón
 !Construyendo el vector de velocidad inicial del antiprotón.
-antiproton%vel = vector(5E1_d,8E2_d,5E1_d)
+!antiproton%vel = vector(5E1_d,8E2_d,5E1_d)
 !Construyendo el vector de posición inicial del antiprotón.
-antiproton%pos = vector(0.5E-8_d,-1E-8_d,0.0_d)
+!antiproton%pos = vector(0.5E-8_d,-1E-8_d,0.0_d)
 !Vector de velocidad del protón (Fijo en esta aproximación)
-proton%vel = 0.0_d
+protonmovil%vel = (5E1_d,8E2_d,5E1_d)
 !Vector de posición del protón (Fijo en esta aproximación)
-proton%pos = vector(-0.5E-8_d,0.0_d,0.0_d)
+protonmovil%pos = vector(0.7E-9_d,0.0_d,0.0_d)
 !!Construyendo el vector de Momento lineal inicial del antiprotón.
-antiproton%mom = antiproton%mass*antiproton%vel
-antiproton%Eelec = 0.0_d
+protonmovil%mom = protonmovil%mass*protonmovil%vel
+protonmovil%Eelec = 0.0_d
 !!Ajustando el tamaño de paso (Cantidad de veces en las que se
 !!actualizará la información del sistema).
 sim%N_step = 5000 !!Usaré sólo 5000 pasos.
@@ -49,18 +67,13 @@ t=0 !!La simulación inicia al tiempo t=0
 !Repetir el proceso hasta que se cumpla la condición
 DO
 IF(t > sim%ttot ) EXIT
-sim%pos2 = antiproton%pos-proton%pos !!Calculando el vector r=r2-r1
-runit=sim%pos2/mag(sim%pos2)
-!!Calculando la interacción eléctrica.
-protonmovil%Eelect=0.0_d
-DO 1,4
-CALL campoelectrico(protonmovil,particulas(i))
-protonmovil%Eelec=protonmovil%Eelec+protonmovil%Eelec
+DO j=1,4
+CALL campoelectrico(protonmovil,particulas(j))
 END DO
 !!Actualizando el momento lineal
-antiproton%mom = antiproton%mom + antiproton%Felec * sim%dt
+protonmovil%mom = protonmovil%mom + protonmovil%Felec * sim%dt
 !!Actualizando la posición
-antiproton%pos = antiproton%pos + antiproton%mom / antiproton%mass * sim%dt
+protonmovil%pos = protonmovil%pos + protonmovil%mom / protonmovil%mass * sim%dt
 WRITE(unit0,*) t , antiproton%pos*scale !!Escribiendo en el archivo
 t = t + sim%dt !!Actualizando el tiempo
 END DO
