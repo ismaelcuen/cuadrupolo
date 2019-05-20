@@ -1,0 +1,5 @@
+SUBROUTINE campoelectrico(a,b)
+  IMPLICIT NONE
+  r=ABS(a%pos-b%pos)
+  a%Felec_d=(K*a%q*b%q)/r**2
+END SUBROUTINE campoelectrico
