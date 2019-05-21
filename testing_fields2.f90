@@ -74,7 +74,8 @@ END DO
 protonmovil%mom = protonmovil%mom + protonmovil%Felec * sim%dt
 !!Actualizando la posición
 protonmovil%pos = protonmovil%pos + protonmovil%mom / protonmovil%mass * sim%dt
-WRITE(unit0,*) t , antiproton%pos*scale !!Escribiendo en el archivo
+WRITE(unit0,*) t , protonmovil%pos*scale !!Escribiendo en el archivo
+CALL eKU(protonmovil,t)
 t = t + sim%dt !!Actualizando el tiempo
 END DO
 
