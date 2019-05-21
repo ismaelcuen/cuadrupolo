@@ -15,7 +15,11 @@ REAL(d) :: scale=1E9 !!Escalar longitudes en los plots
 REAL ( d ), DIMENSION ( 3 ) :: runit !!Vector Unitario
 INTEGER :: unit0 !!Unidad para archivo de salida
 INTEGER::i,j
-REAL(d),DIMENSION(4)::particulas !Arreglo contenedor de las 4 partículas.
+TYPE(charged_particles),DIMENSION(4)::particulas !Arreglo contenedor de las 4 partículas.
+particulas(1)=proton1
+particulas(2)=proton2
+particulas(3)=antiproton1
+particulas(4)=antiproton2
 DO i=1,4
 IF(i=1 .OR. i=2)THEN
 particulas(i)%mass= 1.7E-27_d
@@ -44,7 +48,7 @@ protonmovil%q = 1.6E-19_d !!Carga del protón
 !Construyendo el vector de posición inicial del antiprotón.
 !antiproton%pos = vector(0.5E-8_d,-1E-8_d,0.0_d)
 !Vector de velocidad del protón (Fijo en esta aproximación)
-protonmovil%vel = (5E1_d,8E2_d,5E1_d)
+protonmovil%vel = vector(5E1_d,8E2_d,5E1_d)
 !Vector de posición del protón (Fijo en esta aproximación)
 protonmovil%pos = vector(0.7E-9_d,0.0_d,0.0_d)
 !!Construyendo el vector de Momento lineal inicial del antiprotón.
@@ -57,10 +61,6 @@ sim%ttot = 2E-11_d !!En este ejemplo se realizará la
 !!evolución durante unos segundos
 !sim%ttot = sim%ttot/t0 !!Traduciendo a unidades naturales.
 sim%dt = sim%ttot/sim%N_step !!Calculando el ancho de paso
-particulas(1)=proton1
-particulas(2)=proton2
-particulas(3)=antiproton1
-particulas(4)=antiproton2
 !!Abriendo el archivo de texto
 OPEN(NEWUNIT=unit0,FILE="Sim_ejemplo",STATUS="UNKNOWN",ACCESS="APPEND")
 t=0 !!La simulación inicia al tiempo t=0
