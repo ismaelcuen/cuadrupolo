@@ -17,7 +17,7 @@
 #===============================================
 FC = gfortran #Compiler
 FFLAGS = -O3  #Optimization Flags (maybe tinker with these?)
-FSRC = vector_functions.f90 charged_objects.f90 testing_fields.f90
+FSRC = charged_objects.f90 vector_functions.f90 testing_fields.f90
 FOBJECTS = $(FSRC:.f90=.o) #Objets
 
 #===============================================
